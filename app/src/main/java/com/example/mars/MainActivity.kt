@@ -1,24 +1,22 @@
 package com.example.mars
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleCoroutineScope
-import com.example.mars.data.remote.ApiService
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.mars.features.presentation.screens.MarsScreen
+import com.example.mars.features.presentation.viewModel.MarsViewModel
 import com.example.mars.ui.theme.MarsTheme
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,10 +27,10 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    LaunchedEffect(key1 = true ){
-                        val res = ApiService.apiService.getPhotos().body()
-                        Log.e("res","$res")
-                    }
+                    val viewModel = hiltViewModel<MarsViewModel>()
+                    viewModel.loadMarsData()
+                    val marsUiState = viewModel.uiState.collectAsState()
+                    MarsScreen(state = marsUiState)
 
                 }
             }

@@ -1,4 +1,4 @@
-package com.example.mars.presentation.uiModels
+package com.example.mars.features.presentation.uiModels
 
 data class MarsUiModel(
     val id: Int,
