@@ -6,3 +6,4 @@
 - Coil
 - Retrofit
 - Room
+- Hilt
